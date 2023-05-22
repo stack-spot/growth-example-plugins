@@ -1,0 +1,1 @@
+This action can be used to create GitHub's repositories. To do that, import this action to your stack inside your workspace. Then proceed to create your application, and choose the visibility desired for the repository. 

@@ -1,0 +1,1 @@
+This action creates a GitHub repository for your application using GitHub's API.

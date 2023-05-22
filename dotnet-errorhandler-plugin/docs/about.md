@@ -1,0 +1,1 @@
+The **dotnet-errorhandler-plugin** adds to the Stack the ability to standardize error returns from REST applications.

@@ -1,0 +1,1 @@
+The **dotnet-api-plugin** adds to the stack the ability to provide REST and gRPC services.

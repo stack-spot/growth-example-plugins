@@ -1,0 +1,52 @@
+schema-version: v1
+kind: plugin
+metadata:
+  name: dotnet-api-plugin
+  display-name: .NET API 
+  description: Base template for developing a complete API using C# and REST, running in a container cluster
+  version: 0.0.1
+  picture: plugin.png
+spec:
+  type: app
+  compatibility:
+    - net6.0
+  about: docs/about.md
+  usage: docs/usage.md
+  implementation: docs/implementation.md
+  #requirements: docs/requirements.md
+  repository: https://github.com/stack-spot/growth-example-plugins/dotnet-api-plugin
+  release-notes: docs/release-notes-0.0.1.md
+  technologies:
+    - .NET
+    - C#
+    - Api
+  inputs:
+    - label: Project name
+      type: text
+      name: project_name
+      global: true  
+  global-computed-inputs:
+    project_type: "Api"
+    src_base_path: ""
+    version: "stackspot.rest"
+    package: "StackSpot.Template.Rest"
+    framework: "net6.0"
+  hooks:
+  #package / apply template / install dotnet-format
+    - type: run
+      trigger: after-render
+      windows:      
+        - dotnet new -i {{global_computed_inputs.package}} --force
+        - dotnet new {{global_computed_inputs.version}} -n {{global_inputs.project_name}} -p {{global_inputs.project_name}} -o '{{target_path | replace('\\','\/')}}' --skipRestore true --force      
+        - dotnet new tool-manifest --force
+        - dotnet tool install --local dotnet-format
+      linux:
+        - dotnet new -i {{global_computed_inputs.package}} --force
+        - dotnet new {{global_computed_inputs.version}} -n {{global_inputs.project_name}} -p {{global_inputs.project_name}} -o '{{target_path}}' --skipRestore true --force      
+        - dotnet new tool-manifest --force
+        - dotnet tool install --local dotnet-format
+      mac:
+        - dotnet new -i {{global_computed_inputs.package}} --force
+        - dotnet new {{global_computed_inputs.version}} -n {{global_inputs.project_name}} -p {{global_inputs.project_name}} -o '{{target_path}}' --skipRestore true --force      
+        - dotnet new tool-manifest --force
+        - dotnet tool install --local dotnet-format
