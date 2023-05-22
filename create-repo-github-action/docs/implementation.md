@@ -1,0 +1,1 @@
+This action implements [GitHub's API](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-an-organization-repository) to create a repository. 
