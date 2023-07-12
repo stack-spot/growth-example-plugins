@@ -1,0 +1,3 @@
+#Production profile
+spring:
+  profiles: prod
