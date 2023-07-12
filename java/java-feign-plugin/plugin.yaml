@@ -1,0 +1,74 @@
+schema-version: v1
+kind: plugin
+metadata:
+  name: feign-plugin
+  display-name: feign-plugin
+  description: Configure Feign capability for Java projects
+  version: 1.0.0
+  picture: plugin.png
+spec:
+  type: app
+  compatibility:
+    - java
+  about: docs/about.md
+  usage: docs/usage.md
+  implementation: docs/implementation.md
+  requirements: docs/requirements.md
+  release-notes: docs/release-notes-1.0.0.md
+  technologies: # Ref: https://docs.stackspot.com/docs/create-stacks/yaml-files/yaml/#technologies
+    - Api
+  inputs:
+    - label: Generate sample Feign Client?
+      type: bool
+      default: True
+      name: generate_feign
+      help: 'If YES a sample feign client code is generated in the project'
+
+  hooks:
+    - type: run-script
+      trigger: before-input
+      script: ./scripts/asking_for_required_information.py
+    - type: render-templates
+      trigger: after-render
+      path: sample_feign
+      condition:
+        variable: generate_feign
+        operator: ==
+        value: True
+    - type: edit
+      trigger: after-render
+      path: build.gradle
+      changes:
+        - search:
+            string: "dependencies {"
+            insert-after:
+              snippet: snippets/feign-dependencies-gradle.txt
+            when:
+              not-exists-snippet: snippets/feign-dependencies-gradle.txt
+      condition:
+        variable: build_tool
+        operator: ==
+        value: Gradle
+    - type: edit-xml
+      trigger: after-render
+      path: pom.xml
+      changes:
+        - xpath: "dependencies/dependency[artifactId='spring-cloud-starter-openfeign']"
+          remove: true
+      condition:
+        variable: build_tool
+        operator: ==
+        value: Maven
+    - type: edit-xml
+      trigger: after-render
+      path: pom.xml
+      changes:
+        - xpath: "dependencies"
+          append:
+            snippet: snippets/feign-dependencies-maven.xml
+          when:
+            not-exists: dependencies/dependency/groupId[.='org.springframework.cloud']/../artifactId[.='spring-cloud-starter-openfeign']
+      condition:
+        variable: build_tool
+        operator: ==
+        value: Maven
