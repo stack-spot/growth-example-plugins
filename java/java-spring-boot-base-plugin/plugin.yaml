@@ -1,0 +1,112 @@
+schema-version: v1
+kind: plugin
+metadata:
+  name: spring-boot-base-plugin
+  display-name: Spring Boot Base Plugin
+  description: Base plugin to create the initial application structure based on Java with Spring Boot
+  version: 0.0.2
+  picture: plugin.png
+spec:
+  type: app
+  compatibility:
+    - Api
+    - Springboot
+    - Java
+    - Gradle
+    - Maven
+    - Docker
+    - Rest
+  about: docs/about.md
+  usage: docs/usage.md
+  implementation: docs/implementation.md
+  requirements: docs/requirements.md
+  repository: https://github.com/stack-spot/graphene-spring-boot-base-plugin.git
+  release-notes: docs/release-notes-0.0.1.md
+  technologies: # Ref: https://docs.stackspot.com/docs/create-stacks/yaml-files/yaml/#technologies
+    - Api
+    - Springboot
+    - Java
+    - Gradle
+    - Maven
+    - Docker
+    - Rest
+  inputs:
+    - label: Project Name
+      type: text
+      name: project_name
+      global: true
+    - label: Select the Spring Boot version
+      type: text
+      default: '3.0.1'
+      name: spring_boot_version
+      items:
+        - '3.0.1'
+        - '2.7.2'
+      global: true
+    - label: Inform the project artifact ID
+      type: text
+      name: project_artifact_id
+      pattern: '(^[a-zA-Z-_\d]*$)'
+      global: true
+    - label: Enter a version for the project
+      type: text
+      name: project_version
+      default: '0.0.1-SNAPSHOT'
+      pattern: '(^[a-zA-Z-._\d]*[a-zA-Z\d]$)'
+    - label: Enter a Group ID for the project
+      type: text
+      name: project_group_id
+      default: br.com.graphene
+      global: true
+      pattern: '(^[a-zA-Z_\d.]*[a-zA-Z_\d]$)'
+    ## Case Spring boot version be greater than or equals 3
+    - label: Currently, we provide support to Spring Boot 3.x using Java 17. Ok?
+      type: text
+      name: project_java_version
+      global: true
+      default: '17'
+      pattern: '17'
+      condition:
+        variable: spring_boot_version
+        operator: '>='
+        value: '3'
+    # Case Spring boot version be less than 3
+    - label: Select the Java version
+      type: select
+      name: project_java_version
+      global: true
+      default: '17'
+      condition:
+        variable: spring_boot_version
+        operator: '<'
+        value: '3'
+      items:
+        - '17'
+        - '11'
+        - '8'
+    - label: Select the project build tool
+      type: text
+      items:
+        - Maven
+        - Gradle
+      default: Maven
+      name: build_tool
+      global: true
+  global-computed-inputs:
+    "base_package": "{{project_group_id}}.{{project_name|replace('-','')|replace('.','')}}"
+    "package_dir": "{{global_computed_inputs.base_package|replace('.','/')}}"
+  hooks:
+    - type: render-templates
+      trigger: after-render
+      path: buildtool/gradle
+      condition:
+        variable: build_tool
+        operator: ==
+        value: Gradle
+    - type: render-templates
+      trigger: after-render
+      path: buildtool/maven
+      condition:
+        variable: build_tool
+        operator: ==
+        value: Maven

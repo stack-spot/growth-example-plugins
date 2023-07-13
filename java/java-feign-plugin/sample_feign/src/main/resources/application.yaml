@@ -1,0 +1,4 @@
+sample:
+  feign:
+    name: samplefeign
+    url: https://dummyjson.com

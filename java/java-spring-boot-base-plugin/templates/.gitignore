@@ -1,0 +1,7 @@
+.idea
+#Ignore gradle folders
+.gradle
+build
+
+#Ignore maven
+target

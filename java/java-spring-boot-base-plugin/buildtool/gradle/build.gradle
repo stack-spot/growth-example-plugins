@@ -1,0 +1,54 @@
+plugins {
+    id 'org.springframework.boot' version '{{spring_boot_version}}'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'java'
+    id 'maven-publish'
+}
+
+group = '{{project_group_id}}'
+version = '{{project_version}}'
+sourceCompatibility = '{% if project_java_version == '8'%}1.8{% else %}{{project_java_version}}{% endif %}'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = this.group
+            artifactId = this.name
+            version = this.version
+
+            from components.getProperties().get("java")
+        }
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+bootJar {
+    archiveFileName = archiveBaseName.get()
+            .concat('-')
+            .concat(project.version)
+            .concat('-')
+            .concat('final')
+            .concat('.')
+            .concat(archiveExtension.get())
+}

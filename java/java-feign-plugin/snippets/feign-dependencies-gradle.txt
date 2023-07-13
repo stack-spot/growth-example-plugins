@@ -1,0 +1,1 @@
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:{% if project_java_version == '17'%}4.0.1{% else %}3.1.6{% endif %}'

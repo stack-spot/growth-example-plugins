@@ -1,0 +1,3 @@
+#Dev profile
+spring:
+    profiles: dev
