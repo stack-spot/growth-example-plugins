@@ -1,2 +1,2 @@
 # growth-example-plugins
-repositório de exemplo para plugins
+Repository that contains examples of plugins and actions for stackspot.

@@ -1,5 +1,5 @@
 kind: plugin
-schema-version: v1
+schema-version: v2
 spec:
   about: docs/about.md
   requirements: docs/requirements.md
@@ -13,7 +13,7 @@ spec:
   compatibility:
     - net6.0
 
-  repository: https://github.com/stack-spot/growth-example-plugins/dotnet-errorhandler-plugin
+  repository: https://github.com/stack-spot/growth-demo-plugins
   computed-inputs:
     file: "Program.cs"
     base_path: "{% if global_computed_inputs.src_base_path is defined and global_computed_inputs.src_base_path != '' %}{{global_computed_inputs.src_base_path}}{% else %}{{'.'}}{% endif %}"

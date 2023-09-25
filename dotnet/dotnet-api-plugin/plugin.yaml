@@ -1,10 +1,10 @@
-schema-version: v1
+schema-version: v2
 kind: plugin
 metadata:
   name: dotnet-api-plugin
   display-name: .NET API 
   description: Base template for developing a complete API using C# and REST, running in a container cluster
-  version: 0.0.1
+  version: 0.0.4
   picture: plugin.png
 spec:
   type: app
@@ -14,7 +14,7 @@ spec:
   usage: docs/usage.md
   implementation: docs/implementation.md
   #requirements: docs/requirements.md
-  repository: https://github.com/stack-spot/growth-example-plugins/dotnet-api-plugin
+  repository: https://github.com/stack-spot/growth-demo-plugins
   release-notes: docs/release-notes-0.0.1.md
   technologies:
     - .NET
@@ -24,29 +24,18 @@ spec:
     - label: Project name
       type: text
       name: project_name
-      global: true  
+      global: true
+      required: true
+      pattern: '(^[a-zA-Z_\d\.]*$)'  
   global-computed-inputs:
     project_type: "Api"
     src_base_path: ""
-    version: "stackspot.rest"
-    package: "StackSpot.Template.Rest"
     framework: "net6.0"
+    project_name_kebabcase: "{{project_name | kebabcase | replace('.','')}}"
   hooks:
   #package / apply template / install dotnet-format
     - type: run
       trigger: after-render
-      windows:      
-        - dotnet new -i {{global_computed_inputs.package}} --force
-        - dotnet new {{global_computed_inputs.version}} -n {{global_inputs.project_name}} -p {{global_inputs.project_name}} -o '{{target_path | replace('\\','\/')}}' --skipRestore true --force      
-        - dotnet new tool-manifest --force
-        - dotnet tool install --local dotnet-format
-      linux:
-        - dotnet new -i {{global_computed_inputs.package}} --force
-        - dotnet new {{global_computed_inputs.version}} -n {{global_inputs.project_name}} -p {{global_inputs.project_name}} -o '{{target_path}}' --skipRestore true --force      
-        - dotnet new tool-manifest --force
-        - dotnet tool install --local dotnet-format
-      mac:
-        - dotnet new -i {{global_computed_inputs.package}} --force
-        - dotnet new {{global_computed_inputs.version}} -n {{global_inputs.project_name}} -p {{global_inputs.project_name}} -o '{{target_path}}' --skipRestore true --force      
+      commands:
         - dotnet new tool-manifest --force
         - dotnet tool install --local dotnet-format

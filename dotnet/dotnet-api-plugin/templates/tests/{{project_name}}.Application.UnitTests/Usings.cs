@@ -1,0 +1,9 @@
+﻿global using System.Runtime.Serialization;
+global using AutoMapper;
+global using Microsoft.Extensions.Logging;
+global using Moq;
+global using {{project_name}}.Application.Common.Mappings;
+global using {{project_name}}.Application.CreateHelloWorld;
+global using {{project_name}}.Domain.Enums;
+global using {{project_name}}.Domain.Models;
+global using Xunit;
