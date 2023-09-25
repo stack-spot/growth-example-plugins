@@ -1,10 +1,10 @@
-schema-version: v1
+schema-version: v2
 kind: action
 metadata:
   name: create-github-repo
   display-name: Create Github Repository
   description: Action to create a repository on GitHub using GitHub's API.
-  version: 0.0.1
+  version: 0.0.2
   picture: action.png
 spec:
   type: python
@@ -13,7 +13,7 @@ spec:
   release-notes: docs/release-notes.md
   requirements: docs/requirements.md
   implementation: docs/implementation.md
-  repository: https://github.com/stack-spot/growth-example-plugins/create-repo-github-action
+  repository: https://github.com/stack-spot/growth-demo-plugins/create-repo-github-action
   inputs:
       - label: Visibility
         name: visibility
